@@ -20,7 +20,7 @@ type Wallpaper struct {
 func AddWallpaper(w http.ResponseWriter, r *http.Request) {
 	var wallpaper Wallpaper
 	_ = json.NewDecoder(r.Body).Decode(&wallpaper)
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://tushardbanduser:Tushartxt11223344@cluster0.at7gz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"))
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://username:pass@cluster0.at7gz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"))
 	collection := client.Database("myFirstDatabase").Collection("wallpapers")
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	err = client.Connect(ctx)
