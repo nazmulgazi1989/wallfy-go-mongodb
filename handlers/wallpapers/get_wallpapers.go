@@ -18,6 +18,7 @@ type AllWallpaper struct {
 	Image    string `json:"image"`
 	Desc     string `json:"desc"`
 	Uploader string `json:"uploader"`
+	Category string `json:"category"`
 }
 
 func GetAllWallpaper(w http.ResponseWriter, r *http.Request) {

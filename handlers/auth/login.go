@@ -26,9 +26,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	var user User
 
 	_ = json.NewDecoder(r.Body).Decode(&user)
+
 	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://tushardbanduser:Tushartxt11223344@cluster0.at7gz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"))
 	collection := client.Database("myFirstDatabase").Collection("users")
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+
 	err = client.Connect(ctx)
 	if err != nil {
 		log.Fatal(err)
