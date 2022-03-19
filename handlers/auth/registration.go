@@ -38,7 +38,9 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	} else {
 		collection.InsertOne(ctx, user)
 
-		w.Write([]byte("message: User registered successfully"))
+		json.NewEncoder(w).Encode(map[string]string{
+			"status": "success",
+		})
 	}
 
 }

@@ -1,6 +1,5 @@
 package login
 
-
 import (
 	"context"
 	"encoding/json"
@@ -25,15 +24,16 @@ type User struct {
 
 func Login(w http.ResponseWriter, r *http.Request) {
 	var user User
+
 	_ = json.NewDecoder(r.Body).Decode(&user)
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://username:pass@cluster0.at7gz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"))
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://tushardbanduser:Tushartxt11223344@cluster0.at7gz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"))
 	collection := client.Database("myFirstDatabase").Collection("users")
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	err = client.Connect(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
-	result, err := collection.Find(ctx, bson.M{"email": user.Email})
+	result, err := collection.Find(ctx, bson.M{"email": user.Email, "password": user.Password})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -44,17 +44,17 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println(users)
 	if len(users) > 0 {
-		if users[0].Password == user.Password {
-
+		if users[0].Email == user.Email && users[0].Password == user.Password {
 			token, err := generateToken(users[0].ID)
 			if err != nil {
-				fmt.Println(err)
+				log.Fatal(err)
 			}
 			json.NewEncoder(w).Encode(map[string]string{
 				"status": "success",
 				"token":  token})
 		} else {
-			w.Write([]byte("message: Incorrect password"))
+			w.Write([]byte("message: Wrong credentials"))
+
 		}
 	} else {
 		w.Write([]byte("message: User does not exist"))
